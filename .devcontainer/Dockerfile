@@ -2,16 +2,16 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Apache, PHP, Git, and gnupg
+# Install Apache, PHP, Git, gnupg, and ca-certificates
 RUN apt-get update && \
-    apt-get install -y apache2 php libapache2-mod-php git gnupg && \
+    apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install GitHub CLI
+# Install GitHub CLI - Split steps for clarity
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) [trusted=yes] signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+RUN echo "deb [signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 RUN apt-get update && \
     echo "APT update completed" && \
     apt-get install -y gh && \
