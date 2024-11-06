@@ -32,9 +32,6 @@
           "git.path": "/usr/bin/git"
         }
       }
-    },
-    "features": {
-      "gh-cli": "latest"
     }
   }
   
