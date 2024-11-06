@@ -25,7 +25,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 RUN rm -rf /var/www/html/*
 
 # Copy the post-create.sh script into the container
-COPY .devcontainer/post-create.sh .devcontainer/post-create.sh
+COPY ./.devcontainer/post-create.sh /workspace/.devcontainer/post-create.sh
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
