@@ -2,9 +2,9 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Apache, PHP, and Git
+# Install Apache, PHP, Git, and gnupg
 RUN apt-get update && \
-    apt-get install -y apache2 php libapache2-mod-php git && \
+    apt-get install -y apache2 php libapache2-mod-php git gnupg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
