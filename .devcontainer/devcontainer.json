@@ -5,7 +5,7 @@
     },
     "workspaceFolder": "/var/www/html",
     "forwardPorts": [80, 5500],
-    "postCreateCommand": "service apache2 start && chmod +x .devcontainer/post-create.sh && ./.devcontainer/post-create.sh",
+    "postCreateCommand": "service apache2 start",
     "customizations": {
       "vscode": {
         "extensions": [
@@ -34,3 +34,4 @@
       }
     }
   }
+  
