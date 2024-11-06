@@ -24,11 +24,14 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 # Remove default content from /var/www/html
 RUN rm -rf /var/www/html/*
 
+# Debugging: List contents of .devcontainer before copying
+RUN echo "Listing contents of .devcontainer before COPY:" && ls -al .devcontainer/
+
 # Copy the post-create.sh script into the container
 COPY .devcontainer/post-create.sh /post-create.sh
 
 # Verify the file is copied correctly
-RUN ls -al /
+RUN echo "Listing contents of / after COPY:" && ls -al /
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
