@@ -2,9 +2,9 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Apache, PHP, Git, and gnupg
+# Install Apache, PHP, Git, gnupg, and ca-certificates
 RUN apt-get update && \
-    apt-get install -y apache2 php libapache2-mod-php git gnupg && \
+    apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -12,8 +12,8 @@ RUN apt-get update && \
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-# Import the GPG key explicitly using gpg
-RUN gpg --batch --keyserver hkps://keyserver.ubuntu.com --recv-keys 23F3D4EA75716059
+# Import the GPG key explicitly using apt-key
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 23F3D4EA75716059
 RUN apt-get update && \
     echo "APT update completed" && \
     apt-get install -y gh && \
