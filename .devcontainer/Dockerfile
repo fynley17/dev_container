@@ -28,7 +28,7 @@ RUN rm -rf /var/www/html/*
 RUN echo "Listing contents of .devcontainer before COPY:" && ls -al .devcontainer/
 
 # Copy the post-create.sh script into the container
-COPY .devcontainer/post-create.sh /workspace/.devcontainer/post-create.sh
+COPY ["./.devcontainer/post-create.sh", "/workspace/.devcontainer/post-create.sh"]
 
 # Verify the file is copied correctly
 RUN echo "Listing contents of /workspace/.devcontainer after COPY:" && ls -al /workspace/.devcontainer/
