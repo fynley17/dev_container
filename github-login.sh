@@ -1,11 +1,53 @@
 #!/bin/bash
 
-# Start Apache service
-echo "Starting Apache..."
-apache2 start
+# Function to log in to GitHub interactively
+github_login() {
+  echo "Logging into GitHub..."
+  
+  # GitHub CLI login: this will trigger an interactive OAuth flow
+  gh auth login --web
 
-# Authenticate with GitHub CLI
-echo "Starting GitHub authentication..."
-gh auth login --with-token < /path/to/github-token.txt
+  if [ $? -eq 0 ]; then
+    echo "Successfully logged into GitHub!"
+  else
+    echo "GitHub login failed. Exiting script."
+    exit 1
+  fi
+}
 
-echo "GitHub CLI and Apache setup complete"
+# Ask the user whether they want to use an existing repository or create a new one
+choose_repo() {
+  echo "Do you want to use an existing repository or create a new one?"
+  echo "1. Use an existing repository"
+  echo "2. Create a new repository"
+  read -p "Please enter your choice (1 or 2): " choice
+
+  if [ "$choice" -eq 1 ]; then
+    # Let the user input their existing repository
+    read -p "Enter the name of your existing repository (e.g., 'username/repo'): " repo_name
+    echo "Cloning repository '$repo_name'..."
+    git clone "https://github.com/$repo_name.git" /var/www/html
+    echo "Repository '$repo_name' cloned successfully!"
+  elif [ "$choice" -eq 2 ]; then
+    # Let the user create a new repository
+    read -p "Enter a name for your new repository: " new_repo_name
+    echo "Creating new repository '$new_repo_name'..."
+    gh repo create "$new_repo_name" --public --clone
+    echo "Repository '$new_repo_name' created and cloned successfully!"
+  else
+    echo "Invalid choice, exiting script."
+    exit 1
+  fi
+}
+
+# Remove the placeholder repo after use
+remove_placeholder_repo() {
+  echo "Removing the placeholder repository..."
+  rm -rf /var/www/html/*
+}
+
+# Main script execution
+github_login
+choose_repo
+remove_placeholder_repo
+echo "Setup complete!"
