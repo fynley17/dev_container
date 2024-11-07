@@ -5,7 +5,6 @@
   },
   "workspaceFolder": "/var/www/html",
   "forwardPorts": [80, 5500],
-  "postCreateCommand": "./github-login.sh",
   "customizations": {
     "vscode": {
       "extensions": [
