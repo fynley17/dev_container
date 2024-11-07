@@ -21,7 +21,11 @@ github_login() {
   echo "Logging into GitHub interactively..."
 
   # Trigger the interactive GitHub login (this will open a browser for OAuth)
-  gh auth login --web
+  # Use tmux to run the login in a new terminal-like environment
+  tmux new-session -d -s github-login-session "gh auth login --web; bash"
+  
+  # Attach to tmux session for interactive login
+  tmux attach -t github-login-session
 
   if [ $? -eq 0 ]; then
     echo "Successfully logged into GitHub!"
