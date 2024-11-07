@@ -16,7 +16,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 RUN rm -rf /var/www/html/*
 
 # Clone a placeholder repository (empty repository or a template)
-RUN git clone https://github.com/your-username/placeholder-repo.git /var/www/html
+RUN git clone https://github.com/fynley17/dev_container.git /var/www/html
 
 # Download the authentication script from GitHub
 RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/your-username/your-repository/main/github-login.sh
