@@ -2,6 +2,9 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Set DNS to avoid DNS resolution issues in the container
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
 # Install Apache, PHP, Git, gnupg, ca-certificates, and curl
 RUN apt-get update && \
     apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates curl && \
