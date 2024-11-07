@@ -27,7 +27,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 RUN rm -rf /var/www/html/*
 
 # Download the authentication script from the GitHub repo using curl
-RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/username/repository/main/github-login.sh
+RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/fynley17/dev_container/main/github-login.sh
 
 # Make the script executable
 RUN chmod +x /var/www/html/github-login.sh
