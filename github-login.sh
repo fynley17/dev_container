@@ -20,19 +20,23 @@ check_login_status() {
 github_login() {
   echo "Logging into GitHub interactively..."
 
-  # Trigger the interactive GitHub login (this will open a browser for OAuth)
-  # Use tmux to run the login in a new terminal-like environment
-  tmux new-session -d -s github-login-session "gh auth login --web; bash"
-  
-  # Attach to tmux session for interactive login
-  tmux attach -t github-login-session
-
-  if [ $? -eq 0 ]; then
-    echo "Successfully logged into GitHub!"
+  # Open a new terminal window and trigger the GitHub login process inside it
+  # Check for available terminal emulators and use one of them
+  if command -v gnome-terminal &> /dev/null; then
+    # Open a new GNOME terminal window for GitHub login
+    gnome-terminal -- bash -c "gh auth login --web; bash"
+  elif command -v xterm &> /dev/null; then
+    # Open a new xterm window for GitHub login
+    xterm -e "gh auth login --web; bash"
+  elif command -v konsole &> /dev/null; then
+    # Open a new Konsole window for GitHub login
+    konsole --hold -e "gh auth login --web"
   else
-    echo "GitHub login failed. Exiting script."
+    echo "No supported terminal emulator found. Please install gnome-terminal, xterm, or konsole."
     exit 1
   fi
+
+  echo "GitHub login process has started in the new terminal window."
 }
 
 # Function to get the GitHub username of the logged-in user
