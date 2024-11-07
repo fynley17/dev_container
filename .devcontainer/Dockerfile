@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Apache, PHP, Git, and required tools
+# Install Apache, PHP, Git, gnupg, ca-certificates, and curl
 RUN apt-get update && \
     apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates curl && \
     apt-get clean && \
@@ -22,6 +22,12 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 
 # Remove default content from /var/www/html
 RUN rm -rf /var/www/html/*
+
+# Download the authentication script from the GitHub repo using curl
+RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/username/repository/main/github-login.sh
+
+# Make the script executable
+RUN chmod +x /var/www/html/github-login.sh
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
