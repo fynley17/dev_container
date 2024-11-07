@@ -1,10 +1,26 @@
 #!/bin/bash
 
+# Function to check if the user is already logged in
+check_login_status() {
+  echo "Checking GitHub login status..."
+
+  # Check if the user is already authenticated with GitHub CLI
+  gh auth status &>/dev/null
+  if [ $? -eq 0 ]; then
+    echo "You are already logged into GitHub!"
+  else
+    echo "You are not logged in. Proceeding with interactive login..."
+    # If not logged in, ensure any existing GITHUB_TOKEN is unset
+    unset GITHUB_TOKEN
+    github_login
+  fi
+}
+
 # Function to log in to GitHub interactively
 github_login() {
-  echo "Logging into GitHub..."
-  
-  # GitHub CLI login: this will trigger an interactive OAuth flow
+  echo "Logging into GitHub interactively..."
+
+  # Trigger the interactive GitHub login (this will open a browser for OAuth)
   gh auth login --web
 
   if [ $? -eq 0 ]; then
@@ -60,7 +76,7 @@ remove_placeholder_repo() {
 }
 
 # Main script execution
-github_login
+check_login_status
 get_github_username
 choose_repo
 remove_placeholder_repo
