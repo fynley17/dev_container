@@ -2,19 +2,11 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Apache, PHP, Git, gnupg, ca-certificates, and curl
+# Install Apache, PHP, Git, gnupg, ca-certificates, curl, and GitHub CLI
 RUN apt-get update && \
-    apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates curl && \
+    apt-get install -y apache2 php libapache2-mod-php git gnupg ca-certificates curl gh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Add GitHub CLI key and repository
-RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
-RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-RUN apt-get update && \
-    apt-get install -y gh && \
-    echo "GitHub CLI installed"
 
 # Set up Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
@@ -23,8 +15,11 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 # Remove default content from /var/www/html
 RUN rm -rf /var/www/html/*
 
-# Download the authentication script from the GitHub repo using curl
-RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/username/repository/main/github-login.sh
+# Clone a placeholder repository (empty repository or a template)
+RUN git clone https://github.com/your-username/placeholder-repo.git /var/www/html
+
+# Download the authentication script from GitHub
+RUN curl -o /var/www/html/github-login.sh https://raw.githubusercontent.com/your-username/your-repository/main/github-login.sh
 
 # Make the script executable
 RUN chmod +x /var/www/html/github-login.sh
