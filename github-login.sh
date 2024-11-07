@@ -15,6 +15,19 @@ github_login() {
   fi
 }
 
+# Function to get the GitHub username of the logged-in user
+get_github_username() {
+  # Retrieve the authenticated GitHub username using GitHub CLI
+  username=$(gh api user --jq '.login')
+
+  if [ -z "$username" ]; then
+    echo "Failed to get GitHub username. Exiting script."
+    exit 1
+  fi
+
+  echo "Authenticated as: $username"
+}
+
 # Ask the user whether they want to use an existing repository or create a new one
 choose_repo() {
   echo "Do you want to use an existing repository or create a new one?"
@@ -32,7 +45,7 @@ choose_repo() {
     # Let the user create a new repository
     read -p "Enter a name for your new repository: " new_repo_name
     echo "Creating new repository '$new_repo_name'..."
-    gh repo create "$new_repo_name" --public --clone
+    gh repo create "$username/$new_repo_name" --public --clone
     echo "Repository '$new_repo_name' created and cloned successfully!"
   else
     echo "Invalid choice, exiting script."
@@ -48,6 +61,7 @@ remove_placeholder_repo() {
 
 # Main script execution
 github_login
+get_github_username
 choose_repo
 remove_placeholder_repo
 echo "Setup complete!"
